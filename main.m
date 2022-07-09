@@ -30,8 +30,9 @@ chara = cell(3*rsltn,11);
 %%%10 > K+
 %%%11 > K-
 
+%%Getting characteristic lines
 i = 1;
-for theta=unit_theta:unit_theta:theta_max
+for theta=unit_theta:unit_theta:theta_max       
     chara{i,1} = strcat('0,',num2str(i));
     chara{i,4} = theta*180/pi;
     
@@ -61,6 +62,7 @@ for theta=unit_theta:unit_theta:theta_max
     i = i + 1;
 end
 
+%%Getting axis points
 j = 1;
 for i = length(unit_theta:unit_theta:theta_max)+1:length(unit_theta:unit_theta:theta_max)*2
     chara{i,1} = j;
@@ -109,7 +111,7 @@ int_y = zeros(rsltn,rsltn);
 int_Cm = zeros(rsltn,rsltn);
 int_Cp = zeros(rsltn,rsltn);
 
-
+%%Getting interior points
 for i = (rsltn):-1:1                %%i > no of pts in each wave
     
     l = rsltn - i + 1;              %%wave index
@@ -170,6 +172,7 @@ for i = (rsltn):-1:1                %%i > no of pts in each wave
     end 
 end
 
+%%Getting wall points
 j = 1;
 k = rsltn;
 for i = length(unit_theta:unit_theta:theta_max)*2+1:length(unit_theta:unit_theta:theta_max)*3
@@ -238,5 +241,13 @@ for i = 1:(rsltn-1)
     line([chara{2*rsltn+i,2} chara{2*rsltn+i+1,2}],[chara{2*rsltn+i,3} chara{2*rsltn+i+1,3}],'Color','k','LineWidth',2);
 end
 
-
-
+%%Write stuff
+crdnts = zeros(rsltn+1,3);
+crdnts(:,3) = 0;
+crdnts(1,1) = 0;
+crdnts(1,2) = throat_rad;
+for i = 1:rsltn
+    crdnts(i+1,1) = chara{2*rsltn+i,2};
+    crdnts(i+1,2) = chara{2*rsltn+i,3};
+end
+save 'raw_crdnts.dat' crdnts -ascii;
